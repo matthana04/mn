@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>เมนูอาหาร</title>
+  <style>
+    body {
+      font-family: 'Tahoma', sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .food-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .food-item {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      width: 220px;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .food-item img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .food-item h3 {
+      margin: 10px 0 5px 0;
+      font-size: 16px;
+    }
+
+    .food-item p.price {
+      font-weight: bold;
+      color: #28a745;
+      margin-bottom: 0;
+    }
+
+    .pagination {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .pagination button {
+      margin: 0 5px;
+      padding: 8px 12px;
+      border: none;
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .pagination button.active {
+      background: #0056b3;
+    }
+
+    .pagination button:disabled {
+      background: #ccc;
+      cursor: default;
+    }
+  </style>
+</head>
+<body>
+<nav class="menu-bar">
+    <a href="index.html" class="menu-item">
+      <img src="c:\Users\USER\Downloads\home.png" alt="index">
+      <span>หน้าแรก</span>
+    </a>
+    <a href="food.html" class="menu-item">
+      <img src="c:\Users\USER\Downloads\food-service.png" alt="food">
+      <span>อาหาร</span>
+    </a>
+    <a href="dessert.html" class="menu-item">
+      <img src="c:\Users\USER\Downloads\sweets.png" alt="dessert">
+      <span>ของหวาน</span>
+    </a>
+    <a href="contact.html" class="menu-item">
+      <img src="c:\Users\USER\Downloads\contact-us.png" alt="contact">
+      <span>ติดต่อ</span>
+    </a>
+     <link rel="stylesheet" href="style.css" />
+  </nav>
+
+  <h1>เมนูอาหารแนะนำ</h1>
+  <div class="food-container" id="food-list"></div>
+  <div class="pagination" id="pagination"></div>
+
+  <script>
+    const foods = [
+      { name: "ข้าวผัด", price: 50, img: "https://fit-d.com/image_webp/f?src=./uploads/food/596bdcf545fee3c44bfdc393b9b01fc6.jpg" },
+      { name: "ต้มยำกุ้ง", price: 80, img: "https://static.thairath.co.th/media/4DQpjUtzLUwmJZZSGoljLW5KeafFttEBzPkbbl7GHOdf.jpg" },
+      { name: "ผัดไทย", price: 60, img: "https://s.isanook.com/wo/0/ud/37/185369/food.jpg?ip/crop/w1200h700/q80/jpg" },
+      { name: "แกงเขียวหวาน", price: 70, img: "https://s359.kapook.com/r/600/auto/pagebuilder/9f824e56-6919-46c9-910b-d962b508260e.jpg" },
+      { name: "ข้าวมันไก่", price: 45, img: "https://fit-d.com/image_webp/f?src=./uploads/food/0e26c50a40bd9f0157c5c57a8c268b29.jpg" },
+      { name: "หมูกรอบ", price: 55, img: "https://s359.kapook.com/r/600/auto/pagebuilder/7c901dda-cc1f-4c79-8da0-fb691f90f8a5.jpg" },
+      { name: "ส้มตำ", price: 35, img: "https://promotions.co.th/wp-content/uploads/2023/10/%E0%B8%9B%E0%B8%81-6.jpg" },
+      { name: "ลาบหมู", price: 50, img: "https://s359.kapook.com/pagebuilder/11b09c57-a05c-4ed7-b932-d741fceafd15.jpg" },
+      { name: "ก๋วยเตี๋ยวเรือ", price: 40, img: "https://s359.kapook.com/r/600/auto/pagebuilder/c978856f-afb3-482c-acb4-dc9b87512bfa.jpg" },
+      { name: "ขนมจีนน้ำยา", price: 45, img: "https://www.sgethai.com/wp-content/uploads/2023/04/230418-content-kanomjeen-namya-teenkai.webp" },
+      { name: "หมูปิ้ง", price: 10, img: "https://img.wongnai.com/p/1920x0/2018/07/17/454e074d6e6d4a159c33f327ede65dc2.jpg" },
+      { name: "ข้าวต้ม", price: 30, img: "https://s359.kapook.com/pagebuilder/3074583c-1c05-447b-a6d6-c2bf63dbf133.jpg" },
+      { name: "แกงจืด", price: 40, img: "https://s.isanook.com/wo/0/ud/37/188129/food.jpg" },
+      { name: "ปลาทอด", price: 70, img: "https://s359.kapook.com/pagebuilder/7c452c69-3266-4561-8660-ba8cce938440.jpg" },
+      { name: "ไก่ทอด", price: 60, img: "https://img.wongnai.com/p/1920x0/2020/02/10/d5634340f88846d9bb07795e0195a817.jpg" },
+      { name: "ผัดกระเพรา", price: 50, img: "https://i.pinimg.com/474x/b1/88/2d/b1882dcea15df32ac2d0593cc3f0681e.jpg" },
+      { name: "ไข่เจียว", price: 25, img: "https://www.amarinbabyandkids.com/app/uploads/2022/05/%E0%B9%84%E0%B8%82%E0%B9%88%E0%B9%80%E0%B8%88%E0%B8%B5%E0%B8%A2%E0%B8%A7FB.jpg" },
+      { name: "ข้าวหมูแดง", price: 50, img: "https://s359.kapook.com/pagebuilder/9ca9faa1-37c4-411f-b507-9bfbfc25aa23.jpg" },
+      { name: "น้ำตกหมู", price: 45, img: "https://img.kapook.com/u/wanwanat/Thai%20pork%20salad.jpg" },
+      { name: "ข้าวคลุกกะปิ", price: 45, img: "https://img.wongnai.com/p/1920x0/2018/09/15/81c5e3d1df124f3db677a8ac16045ac4.jpg" },
+      { name: "ข้าวซอย", price: 65, img: "https://img.wongnai.com/p/1968x0/2020/05/20/c0b7b1af395e44b6965494efb7b09cfa.jpg" },
+      { name: "มัสมั่น", price: 50, img: "https://img.wongnai.com/p/1920x0/2018/10/19/a67e7aeb0c0b462391961bddf7365225.jpg" },
+      { name: "หมูโสร่ง", price: 55, img: "https://img.wongnai.com/p/1920x0/2018/03/30/9c416bc8f7e0437caff5e0f34eefbe86.jpg" },
+      { name: "ข้าวหน้าเป็ด", price: 55, img: "https://img.wongnai.com/p/400x0/2020/08/11/d08bea98e0b241828bc5520b15863ccd.jpg" },
+      { name: "บะหมี่เกี๊ยว", price: 50, img: "https://s359.kapook.com/pagebuilder/ffa2ebe2-541b-4c68-9a18-14f234f8d544.jpg" }
+    ];
+
+    const itemsPerPage = 5;
+    const totalPages = Math.ceil(foods.length / itemsPerPage);
+    let currentPage = 1;
+
+    function showPage(page) {
+      const list = document.getElementById("food-list");
+      const pagination = document.getElementById("pagination");
+      list.innerHTML = "";
+
+      const start = (page - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const currentItems = foods.slice(start, end);
+
+      currentItems.forEach(food => {
+        const div = document.createElement("div");
+        div.className = "food-item";
+        div.innerHTML = `
+          <img src="${food.img}" alt="${food.name}">
+          <h3>${food.name}</h3>
+          <p class="price">${food.price} บาท</p>
+        `;
+        list.appendChild(div);
+      });
+
+      pagination.innerHTML = "";
+      for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement("button");
+        btn.textContent = i;
+        if (i === page) btn.classList.add("active");
+        btn.onclick = () => {
+          currentPage = i;
+          showPage(currentPage);
+        };
+        pagination.appendChild(btn);
+      }
+    }
+
+    showPage(currentPage);
+  </script>
+
+
+
+  <footer style="background-color: #222; color: #fff; padding: 40px 0; text-align: center;">
+  <div style="max-width: 1000px; margin: auto;">
+    <p>&copy; 2025 YourCompany. All rights reserved.</p>
+    <div style="margin-top: 20px;">
+      <a href="https://facebook.com" style="margin: 0 10px; color: #fff;">Facebook</a>
+      <a href="https://twitter.com" style="margin: 0 10px; color: #fff;">Twitter</a>
+      <a href="https://instagram.com" style="margin: 0 10px; color: #fff;">Instagram</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
+
